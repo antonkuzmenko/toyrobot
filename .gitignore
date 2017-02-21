@@ -12,6 +12,7 @@
 /.vagrant/
 /.idea/
 /.rspec_status
+*.log
 
 # Used by dotenv library to load environment variables.
 # .env
