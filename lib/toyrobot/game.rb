@@ -10,16 +10,13 @@ module Toyrobot
       @robot = NilRobot.new
     end
 
-    def handle_command(instructions)
-      commands = InstructionsParser.new.parse(instructions)
-      commands.each do |command|
-        handler_name = command.class.name.split('::').last.gsub(/Command\z/, '')
+    def handle_command(command)
+      handler_name = command.class.name.split('::').last.gsub(/Command\z/, '')
 
-        if CommandHandlers.const_defined?("#{handler_name}Handler", false)
-          handler_class = CommandHandlers.const_get("#{handler_name}Handler", false)
-          handler = handler_class.new(self)
-          (handler.method(:call).arity == 1) ? handler.call(command) : handler.call
-        end
+      if CommandHandlers.const_defined?("#{handler_name}Handler", false)
+        handler_class = CommandHandlers.const_get("#{handler_name}Handler", false)
+        handler = handler_class.new(self)
+        (handler.method(:call).arity == 1) ? handler.call(command) : handler.call
       end
     end
 

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'toyrobot'
+
+ARGF.each_line do |line|
+  game = Toyrobot::Game.new
+  commands = Toyrobot::InstructionsParser.new.parse(line)
+  commands.each do |command|
+    game.handle_command(command)
+  end
+end
