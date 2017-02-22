@@ -1,11 +1,13 @@
 module Toyrobot
   class Game
-    FACINGS = %w(NORTH EAST SOUTH WEST).freeze
     STEP_SIZE = 1
-    TABLE_LENGTH = 4
-    TABLE_WIDTH = 4
 
-    attr_accessor :x, :y, :facing_index
+    attr_reader :table
+    attr_accessor :robot
+
+    def initialize(table_length: 4, table_width: 4)
+      @table = Table.new(table_length, table_width)
+    end
 
     def handle_command(instruction)
       command, *args = instruction.split(' ')
@@ -21,12 +23,8 @@ module Toyrobot
       end
     end
 
-    def report
-      facing.empty? ? 'Unplaced' : "#{x},#{y},#{facing}"
-    end
-
-    def facing
-      facing_index.nil? ? '' : FACINGS[facing_index]
+    def to_s
+      robot.nil? ? 'Unplaced' : robot.to_s
     end
   end
 end
