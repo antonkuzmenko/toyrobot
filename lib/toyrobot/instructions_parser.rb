@@ -14,13 +14,11 @@ module Toyrobot
 
       result_commands = []
 
-      instructions.each_line do |line|
-        line.scan(/#{commands.map(&:last).join('|')}/) do |*args|
-          command, attrs = args.flatten.compact
+      instructions.scan(/#{commands.map(&:last).join('|')}/) do |*args|
+        command, attrs = args.flatten.compact
 
-          if command
-            result_commands << commands.find { |e| e.first == command }[1].new(*attrs.to_s.split(','))
-          end
+        if command
+          result_commands << commands.find { |e| e.first == command }[1].new(*attrs.to_s.split(','))
         end
       end
 

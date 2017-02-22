@@ -46,5 +46,24 @@ describe Toyrobot::InstructionsParser do
         expect(subject.first.direction).to eq 'EAST'
       end
     end
+
+    context 'when parsing invalid data' do
+      let(:instructions) { "Asd )()( ASD \n12102394098~,." }
+
+      it { is_expected.to eq [] }
+    end
+
+    context 'when arguments are missing' do
+      let(:instructions) { 'PLACE MOVE' }
+
+      it { is_expected.to include an_instance_of Toyrobot::Commands::MoveCommand }
+      it { is_expected.not_to include an_instance_of Toyrobot::Commands::PlaceCommand }
+    end
+
+    context 'when some arguments are missing' do
+      let(:instructions) { 'PLACE 1,2' }
+
+      it { is_expected.to eq [] }
+    end
   end
 end
