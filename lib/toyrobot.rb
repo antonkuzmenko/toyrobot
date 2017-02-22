@@ -8,8 +8,8 @@ module Toyrobot
   require 'toyrobot/robot'
   require 'toyrobot/nil_robot'
 
-  require 'toyrobot/vector2d'
-  require 'toyrobot/direction'
+  require 'toyrobot/engine/vector2d'
+  require 'toyrobot/engine/direction'
 
   require 'toyrobot/commands/report_command'
   require 'toyrobot/commands/move_command'
