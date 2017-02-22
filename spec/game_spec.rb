@@ -77,6 +77,15 @@ RSpec.describe Toyrobot::Game do
     it 'does nothing when robot is not places' do
       game.handle_command('MOVE')
       expect(game.to_s).to eq 'Unplaced'
+      game.handle_command('RIGHT')
+      expect(game.to_s).to eq 'Unplaced'
+      game.handle_command('LEFT')
+      expect(game.to_s).to eq 'Unplaced'
+    end
+
+    it 'handles multiple commands sequentially' do
+      game.handle_command('PLACE 0,0,NORTH MOVE')
+      expect(game.to_s).to eq '0,1,NORTH'
     end
   end
 end
