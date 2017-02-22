@@ -7,6 +7,7 @@ module Toyrobot
 
     def initialize(table_length: 4, table_width: 4)
       @table = Table.new(table_length, table_width)
+      @robot = NilRobot.new
     end
 
     def handle_command(instruction)
@@ -24,7 +25,7 @@ module Toyrobot
     end
 
     def to_s
-      robot.nil? ? 'Unplaced' : robot.to_s
+      robot.to_s
     end
   end
 end

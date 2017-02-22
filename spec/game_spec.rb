@@ -73,5 +73,10 @@ RSpec.describe Toyrobot::Game do
       game.handle_command('PLACE 0,0,INVALID')
       expect(game.to_s).to eq 'Unplaced'
     end
+
+    it 'does nothing when robot is not places' do
+      game.handle_command('MOVE')
+      expect(game.to_s).to eq 'Unplaced'
+    end
   end
 end

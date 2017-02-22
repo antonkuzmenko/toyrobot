@@ -38,13 +38,5 @@ module Toyrobot
     private
 
     attr_reader :vector, :direction, :table
-
-    # def rotate_left
-    #
-    # end
-    #
-    # def rotate_right
-    #
-    # end
   end
 end

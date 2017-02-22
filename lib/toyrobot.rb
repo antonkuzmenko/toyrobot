@@ -3,6 +3,7 @@ module Toyrobot
   require 'toyrobot/game'
   require 'toyrobot/table'
   require 'toyrobot/robot'
+  require 'toyrobot/nil_robot'
   require 'toyrobot/vector2d'
   require 'toyrobot/direction'
   require 'toyrobot/command_handlers/base_handler'
