@@ -1,8 +1,6 @@
 module Toyrobot
   module CommandHandlers
     class BaseHandler
-      attr_reader :game
-
       def initialize(game)
         @game = game
       end
@@ -10,6 +8,10 @@ module Toyrobot
       def call
         raise NotImplementedError
       end
+
+      private
+
+      attr_reader :game
     end
   end
 end

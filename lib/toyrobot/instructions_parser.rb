@@ -1,28 +1,60 @@
 module Toyrobot
   class InstructionsParser
-    def parse(instructions)
-      commands = Commands.constants(false).map do |name|
-        const = Commands.const_get(name, false)
-        arity = const.instance_method(:initialize).arity
+    Instruction = Struct.new(:name, :command_class, :regexp)
 
-        name = name.to_s.gsub(/Command\z/, '').upcase
-        args = Array.new(arity) { /[^,\s]+/ }.join(',')
-        regex = args.empty? ? /(#{name})/ : /(#{name}) (#{args})/
+    private_constant :Instruction
 
-        [name, const, regex]
+    def parse(input)
+      instructions = create_instructions
+      commands = []
+
+      input.scan(/#{regexps(instructions)}/) do |*args|
+        instruction_name, attributes = args.flatten.compact
+        next unless instruction_name
+
+        instruction = find_instruction(instruction_name, instructions)
+        commands << instruction.command_class.new(*attributes.to_s.split(','))
       end
 
-      result_commands = []
+      commands
+    end
 
-      instructions.scan(/#{commands.map(&:last).join('|')}/) do |*args|
-        command, attrs = args.flatten.compact
+    private
 
-        if command
-          result_commands << commands.find { |e| e.first == command }[1].new(*attrs.to_s.split(','))
-        end
+    def create_instructions
+      Commands.constants(false).map do |class_name|
+        command_class = command_class(class_name)
+        class_name = instruction_name(class_name)
+        args = arguments_regexp(command_class)
+        regexp = args.empty? ? /(#{class_name})/ : /(#{class_name}) (#{args})/
+
+        Instruction.new(class_name, command_class, regexp)
       end
+    end
 
-      result_commands
+    def command_class(class_name)
+      Commands.const_get(class_name, false)
+    end
+
+    def instruction_name(class_name)
+      class_name.to_s.gsub(/Command\z/, '').upcase
+    end
+
+    def arguments_regexp(command_class)
+      Array.new(arguments_count(command_class)) { /[^,\s]+/ }.join(',')
+    end
+
+    def arguments_count(command_class)
+      arity = command_class.instance_method(:initialize).arity
+      arity < 0 ? 0 : arity
+    end
+
+    def regexps(instructions)
+      instructions.map(&:regexp).join('|')
+    end
+
+    def find_instruction(instruction_name, instructions)
+      instructions.find { |e| e.first == instruction_name }
     end
   end
 end

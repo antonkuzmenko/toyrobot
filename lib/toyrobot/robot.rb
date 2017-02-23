@@ -28,7 +28,7 @@ module Toyrobot
                      vector
                    end
 
-      @vector = new_vector if table.include?(new_vector)
+      @vector = new_vector if table.includes?(new_vector)
     end
 
     def to_s

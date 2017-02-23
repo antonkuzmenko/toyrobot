@@ -5,7 +5,7 @@ module Toyrobot
       @table_width = table_width
     end
 
-    def include?(vector)
+    def includes?(vector)
       vector.x >=0 && vector.y >= 0 && vector.x <= table_length && vector.y <= table_width
     end
 
