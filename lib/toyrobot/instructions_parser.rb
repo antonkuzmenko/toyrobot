@@ -1,60 +1,28 @@
 module Toyrobot
   class InstructionsParser
-    Instruction = Struct.new(:name, :command_class, :regexp)
-
-    private_constant :Instruction
-
     def parse(input)
-      instructions = create_instructions
-      commands = []
-
-      input.scan(/#{regexps(instructions)}/) do |*args|
-        instruction_name, attributes = args.flatten.compact
-        next unless instruction_name
-
-        instruction = find_instruction(instruction_name, instructions)
-        commands << instruction.command_class.new(*attributes.to_s.split(','))
+      commands = input.each_line.map do |line|
+        command_name, args = parse_line(line)
+        create_command(command_name, args)
       end
 
-      commands
+      commands.compact
     end
 
     private
 
-    def create_instructions
-      Commands.constants(false).map do |class_name|
-        command_class = command_class(class_name)
-        class_name = instruction_name(class_name)
-        args = arguments_regexp(command_class)
-        regexp = args.empty? ? /(#{class_name})/ : /(#{class_name}) (#{args})/
-
-        Instruction.new(class_name, command_class, regexp)
-      end
+    def parse_line(line)
+      command_name, args = line.split(' ').map(&:strip)
+      [command_name, args&.split(',')]
     end
 
-    def command_class(class_name)
-      Commands.const_get(class_name, false)
+    def create_command(name, args)
+      command_class(name).new(*args)
+    rescue ArgumentError, NameError
     end
 
-    def instruction_name(class_name)
-      class_name.to_s.gsub(/Command\z/, '').upcase
-    end
-
-    def arguments_regexp(command_class)
-      Array.new(arguments_count(command_class)) { /[^,\s]+/ }.join(',')
-    end
-
-    def arguments_count(command_class)
-      arity = command_class.instance_method(:initialize).arity
-      arity < 0 ? 0 : arity
-    end
-
-    def regexps(instructions)
-      instructions.map(&:regexp).join('|')
-    end
-
-    def find_instruction(instruction_name, instructions)
-      instructions.find { |e| e.first == instruction_name }
+    def command_class(command)
+      Commands.const_get("#{command.capitalize}Command", false)
     end
   end
 end

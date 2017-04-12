@@ -22,7 +22,7 @@ describe Toyrobot::InstructionsParser do
     end
 
     context 'when parsing multiple instructions' do
-      let(:instructions) { 'MOVE RIGHT LEFT' }
+      let(:instructions) { "MOVE\nRIGHT\nLEFT" }
 
       it { is_expected.to include an_instance_of Toyrobot::Commands::MoveCommand }
       it { is_expected.to include an_instance_of Toyrobot::Commands::LeftCommand }
@@ -34,7 +34,7 @@ describe Toyrobot::InstructionsParser do
     end
 
     context 'when parsing an instruction with arguments' do
-      let(:instructions) { 'PLACE 1,2,EAST RIGHT MOVE' }
+      let(:instructions) { "PLACE 1,2,EAST\nRIGHT\nMOVE" }
 
       it { is_expected.to include an_instance_of Toyrobot::Commands::PlaceCommand }
       it { is_expected.to include an_instance_of Toyrobot::Commands::RightCommand }
@@ -54,10 +54,9 @@ describe Toyrobot::InstructionsParser do
     end
 
     context 'when arguments are missing' do
-      let(:instructions) { 'PLACE MOVE' }
+      let(:instructions) { 'PLACE' }
 
-      it { is_expected.to include an_instance_of Toyrobot::Commands::MoveCommand }
-      it { is_expected.not_to include an_instance_of Toyrobot::Commands::PlaceCommand }
+      it { is_expected.to eq [] }
     end
 
     context 'when some arguments are missing' do
