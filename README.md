@@ -1,13 +1,5 @@
 ## Installation
 
-```bash
-vagrant up
-```
-
-And then execute:
-
-    $ vagrant ssh
-    $ cd /vagrant
     $ bin/setup
 
 ## Usage
