@@ -12,9 +12,13 @@ And then execute:
 
 ## Usage
 
-    $ echo RIGHT PLACE -100,2,NORTH REPORT PLACE 1,2,NORTH REPORT RIGHT \
-      teST ASD REPORT MOVE REPORT MOVE MOVE MOVE MOVE \
-      MOVE MOVE REPORT | exe/toyrobot
+    $ ./exe/toyrobot
+    PLACE 1,1,NORTH
+    REPORT
+    Output: 1,1,NORTH
+    MOVE
+    REPORT
+    Output: 1,2,NORTH
 
 ## License
 
