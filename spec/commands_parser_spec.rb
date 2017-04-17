@@ -1,18 +1,18 @@
 require 'spec_helper'
 
-describe Toyrobot::InstructionsParser do
+describe Toyrobot::CommandsParser do
   describe '#parse' do
     let(:parser) { described_class.new }
-    let(:instructions) { '' }
+    let(:commands) { '' }
 
-    subject { parser.parse(instructions) }
+    subject { parser.parse(commands) }
 
     context 'when parsing an empty string' do
       it { is_expected.to eq [] }
     end
 
-    context 'when parsing an instruction without arguments' do
-      let(:instructions) { 'MOVE' }
+    context 'when parsing an command without arguments' do
+      let(:commands) { 'MOVE' }
 
       it { is_expected.to include an_instance_of Toyrobot::Commands::MoveCommand }
 
@@ -21,8 +21,8 @@ describe Toyrobot::InstructionsParser do
       end
     end
 
-    context 'when parsing multiple instructions' do
-      let(:instructions) { "MOVE\nRIGHT\nLEFT" }
+    context 'when parsing multiple commands' do
+      let(:commands) { "MOVE\nRIGHT\nLEFT" }
 
       it { is_expected.to include an_instance_of Toyrobot::Commands::MoveCommand }
       it { is_expected.to include an_instance_of Toyrobot::Commands::LeftCommand }
@@ -33,8 +33,8 @@ describe Toyrobot::InstructionsParser do
       end
     end
 
-    context 'when parsing an instruction with arguments' do
-      let(:instructions) { "PLACE 1,2,EAST\nRIGHT\nMOVE" }
+    context 'when parsing an command with arguments' do
+      let(:commands) { "PLACE 1,2,EAST\nRIGHT\nMOVE" }
 
       it { is_expected.to include an_instance_of Toyrobot::Commands::PlaceCommand }
       it { is_expected.to include an_instance_of Toyrobot::Commands::RightCommand }
@@ -48,19 +48,19 @@ describe Toyrobot::InstructionsParser do
     end
 
     context 'when parsing invalid data' do
-      let(:instructions) { "Asd )()( ASD \n12102394098~,." }
+      let(:commands) { "Asd )()( ASD \n12102394098~,." }
 
       it { is_expected.to eq [] }
     end
 
     context 'when arguments are missing' do
-      let(:instructions) { 'PLACE' }
+      let(:commands) { 'PLACE' }
 
       it { is_expected.to eq [] }
     end
 
     context 'when some arguments are missing' do
-      let(:instructions) { 'PLACE 1,2' }
+      let(:commands) { 'PLACE 1,2' }
 
       it { is_expected.to eq [] }
     end

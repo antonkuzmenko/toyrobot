@@ -1,5 +1,5 @@
 module Toyrobot
-  class InstructionsParser
+  class CommandsParser
     def parse(input)
       commands = input.each_line.map do |line|
         command_name, args = parse_line(line)

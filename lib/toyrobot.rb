@@ -1,7 +1,7 @@
 module Toyrobot
   require 'toyrobot/version'
 
-  require 'toyrobot/instructions_parser'
+  require 'toyrobot/commands_parser'
 
   require 'toyrobot/game'
   require 'toyrobot/table'
