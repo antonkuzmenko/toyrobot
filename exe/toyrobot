@@ -6,7 +6,7 @@ require 'toyrobot'
 game = Toyrobot::Game.new
 
 ARGF.each_line do |line|
-  commands = Toyrobot::InstructionsParser.new.parse(line)
+  commands = Toyrobot::CommandsParser.new.parse(line)
   commands.each do |command|
     game.handle_command(command)
   end
